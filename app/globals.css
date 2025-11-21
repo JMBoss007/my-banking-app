@@ -340,7 +340,7 @@
   }
 
   .footer_name {
-    @apply flex size-10 items-center justify-center rounded-full bg-gray-200 max-xl:hidden;
+    @apply flex w-10 h-10 items-center justify-center rounded-full bg-gray-200 max-xl:hidden;
   }
 
   .footer_email {
@@ -348,7 +348,7 @@
   }
 
   .footer_name-mobile {
-    @apply flex size-10 items-center justify-center rounded-full bg-gray-200;
+    @apply flex w-10 h-10 items-center justify-center rounded-full bg-gray-200;
   }
 
   .footer_email-mobile {
@@ -356,11 +356,11 @@
   }
 
   .footer_image {
-    @apply relative size-5 max-xl:w-full max-xl:flex max-xl:justify-center max-xl:items-center;
+    @apply relative w-5 h-5 max-xl:w-full max-xl:flex max-xl:justify-center max-xl:items-center;
   }
 
   .footer_image-mobile {
-    @apply relative size-5;
+    @apply relative w-5 h-5;
   }
 
   /* Sidebar */
