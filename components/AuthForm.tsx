@@ -22,7 +22,7 @@ import CustomInput from './CustomInput'
 import { authFormSchema } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { getLoggedInUser, signIn, signUp } from '@/lib/actions/user.actions'
+import { getLoggedInUser, getUserInfo, signIn, signUp } from '@/lib/actions/user.actions'
 import PlaidLink from './PlaidLink'
 
 const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
@@ -46,7 +46,7 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
     try{
       // Sign up with Appwrite & create a Plaid Link token
       
-      if(type === 'sign-up'){
+      if (type === 'sign-up') {
         const userData = {
           firstName: data.firstName!,
           lastName: data.lastName!,
@@ -58,12 +58,30 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
           ssn: data.ssn!,
           email: data.email,
           password: data.password
-        }
-        
-        const newUser = await signUp(userData)
+        };
 
-        setUser(newUser);
+        const newUser = await signUp(userData);
+
+  // ⭐ IMPORTANT: Fetch full user row again to include Dwolla fields
+        const loggedIn = await getLoggedInUser();
+        if (!loggedIn) {
+          console.error("❌ getLoggedInUser() returned null");
+          return;
+        }
+
+        const dbUser = await getUserInfo({ userId: loggedIn.$id });
+
+// ⭐ Inject the REAL auth userId into the object (Plaid needs this)
+        const mergedUser = {
+          ...dbUser,
+          $id: loggedIn.$id   // OVERRIDE the DB document ID with the AUTH USER ID
+        };
+
+        setUser(mergedUser);
+
+
       }
+
 
       if(type === 'sign-in'){
         const response = await signIn({
