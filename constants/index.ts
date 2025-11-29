@@ -19,6 +19,31 @@ export const sidebarLinks = [
     route: "/payment-transfer",
     label: "Transfer Funds",
   },
+  {
+  label: "CarePulse",
+  route: "https://jma-healthcare.vercel.app/",
+  external: true,
+  },
+  {
+  label: "Dwolla",
+  route: "https://dashboard.dwolla.com/login",
+  external: true,
+  },
+  {
+  label: "Plaid",
+  route: "https://dashboard.plaid.com/",
+  external: true,
+  },
+  {
+  label: "Horizon AW",
+  route: "https://cloud.appwrite.io/console/project-fra-691d032200218fc387bb/overview/platforms",
+  external: true,
+  },
+  {
+  label: "Carepulse AW",
+  route: "https://cloud.appwrite.io/console/project-fra-68d29e6e0001cb52c7a0/overview/platforms",
+  external: true,
+  },
 ];
 
 // good_user / good_password - Bank of America

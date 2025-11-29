@@ -45,29 +45,65 @@ const MobileNav = ({ user }: MobileNavProps) => {
             <SheetClose asChild>
               <nav className="flex h-full flex-col gap-6 pt-16 text-white">
                   {sidebarLinks.map((item) => {
-                const isActive = pathname === item.route || pathname.startsWith(`${item.route}/`)
+  const isActive =
+    !item.external &&
+    (pathname === item.route || pathname.startsWith(`${item.route}/`));
 
-                return (
-                  <SheetClose asChild key={item.route}>
-                    <Link href={item.route} key={item.label}
-                      className={cn('mobilenav-sheet_close w-full', { 'bg-bank-gradient': isActive })}
-                    >
-                        <Image 
-                          src={item.imgURL}
-                          alt={item.label}
-                          width={20}
-                          height={20}
-                          className={cn({
-                            'brightness-[3] invert-0': isActive
-                          })}
-                        />
-                      <p className={cn("text-16 font-semibold text-black-2 whitespace-nowrap", { "text-white": isActive })}>
-                        {item.label}
-                      </p>
-                    </Link>
-                  </SheetClose>
-                )
-              })}
+  // External links (open in new tab)
+  if (item.external) {
+    return (
+      <SheetClose asChild key={item.label}>
+        <a
+          href={item.route}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mobilenav-sheet_close w-full"
+        >
+          <Image
+            src={item.imgURL}
+            alt={item.label}
+            width={20}
+            height={20}
+          />
+          <p className="text-16 font-semibold text-black-2 whitespace-nowrap">
+            {item.label}
+          </p>
+        </a>
+      </SheetClose>
+    );
+  }
+
+  // Internal links (Next.js routing)
+  return (
+    <SheetClose asChild key={item.route}>
+      <Link
+        href={item.route}
+        className={cn("mobilenav-sheet_close w-full", {
+          "bg-bank-gradient": isActive,
+        })}
+      >
+        <Image
+          src={item.imgURL}
+          alt={item.label}
+          width={20}
+          height={20}
+          className={cn({
+            "brightness-[3] invert-0": isActive,
+          })}
+        />
+        <p
+          className={cn(
+            "text-16 font-semibold text-black-2 whitespace-nowrap",
+            { "text-white": isActive }
+          )}
+        >
+          {item.label}
+        </p>
+      </Link>
+    </SheetClose>
+  );
+})}
+
 
               USER
               </nav>

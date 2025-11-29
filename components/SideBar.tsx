@@ -26,28 +26,52 @@ const Sidebar = ({ user }: SiderbarProps) => {
         </Link>
 
         {sidebarLinks.map((item) => {
-          const isActive = pathname === item.route || pathname.startsWith(`${item.route}/`)
+          const isActive =
+            !item.external &&
+            (pathname === item.route || pathname.startsWith(`${item.route}/`));
 
+          // External link → <a target="_blank">
+          if (item.external) {
           return (
-            <Link href={item.route} key={item.label}
-              className={cn('sidebar-link', { 'bg-bank-gradient': isActive })}
+            <a
+              key={item.label}
+              href={item.route}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sidebar-link"
             >
               <div className="relative size-6">
-                <Image 
-                  src={item.imgURL}
-                  alt={item.label}
-                  fill
-                  className={cn({
-                    'brightness-[3] invert-0': isActive
-                  })}
-                />
+                <Image src={item.imgURL} alt={item.label} fill />
               </div>
-              <p className={cn("sidebar-label", { "!text-white": isActive })}>
-                {item.label}
-              </p>
-            </Link>
-          )
-        })}
+              <p className="sidebar-label">{item.label}</p>
+            </a>
+          );
+        }
+
+        // Internal link → <Link>
+        return (
+          <Link
+            href={item.route}
+            key={item.label}
+            className={cn("sidebar-link", { "bg-bank-gradient": isActive })}
+          >
+            <div className="relative size-6">
+              <Image
+                src={item.imgURL}
+                alt={item.label}
+                fill
+                className={cn({
+                  "brightness-[3] invert-0": isActive,
+                })}
+              />
+            </div>
+            <p className={cn("sidebar-label", { "!text-white": isActive })}>
+              {item.label}
+            </p>
+          </Link>
+        );
+      })}
+
         
         <PlaidLink user={user} />
       </nav>
